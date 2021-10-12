@@ -1,0 +1,8 @@
+td,
+th {
+  border: black solid 1px;
+}
+
+.buttons-panel {
+  margin-left: 160px;
+}
