@@ -14,13 +14,21 @@ function App() {
       <TableActivities activities={activities} setActivities={setActivities} />
       <div className="buttons-panel">
         <Link to="/add-activity">
-          <input type="button" value="Insert activity" />
+          <input
+            data-testid="insert-form-button"
+            type="button"
+            value="Insert activity"
+          />
         </Link>
         <Link to="/update-activity">
           <input type="button" value="Update activity" />
         </Link>
         <Link to="/delete-activity">
-          <input type="button" value="Delete activity" />
+          <input
+            data-testid="delete-button-app"
+            type="button"
+            value="Delete activity"
+          />
         </Link>
       </div>
       <Switch>

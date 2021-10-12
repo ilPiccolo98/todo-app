@@ -3,10 +3,12 @@ import { React } from "react";
 const Body = (props) => {
   return props.activities.map((item) => (
     <tr key={item.id}>
-      <td>{item.id}</td>
-      <td>{item.name}</td>
-      <td>{item.description}</td>
-      <td>{item.status ? "true" : "false"}</td>
+      <td data-testid={"td-id-" + item.id}>{item.id}</td>
+      <td data-testid={"td-name-" + item.id}>{item.name}</td>
+      <td data-testid={"td-description-" + item.id}>{item.description}</td>
+      <td data-testid={"td-status-" + item.id}>
+        {item.status ? "true" : "false"}
+      </td>
     </tr>
   ));
 };

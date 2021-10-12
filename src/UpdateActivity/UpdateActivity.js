@@ -1,64 +1,109 @@
-import React from "react";
-import { Formik, Field, Form } from "formik";
-import initialValues from "./InitialValues/InitialValues";
-import validation from "./Validation/Validation";
+import React, { useState } from "react";
 import { copyArray } from "../Utilities/Utilities";
 
 const UpdateActivity = (props) => {
+  const [id, setId] = useState("1");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState(false);
+
   const isIdExisting = (id, activities) => {
-    const idFound = activities.filter((item) => item.id === id);
+    const idFound = activities.filter(
+      (item) => parseInt(item.id) === parseInt(id)
+    );
     return idFound.length ? true : false;
   };
 
   const updateActivity = (activities, updatedActivity) => {
     for (let i = 0; i !== activities.length; ++i) {
-      if (activities[i].id === updatedActivity.id)
+      if (parseInt(activities[i].id) === parseInt(updatedActivity.id))
         activities[i] = updatedActivity;
     }
   };
 
-  const handleSubmit = (values) => {
-    if (isIdExisting(values.id, props.activities)) {
+  const handleChangeIdField = (e) => {
+    e.preventDefault();
+    setId(e.target.value);
+  };
+
+  const handleChangeNameField = (e) => {
+    e.preventDefault();
+    setName(e.target.value);
+  };
+
+  const handleChangeDescriptionField = (e) => {
+    e.preventDefault();
+    setDescription(e.target.value);
+  };
+
+  const handleChangeStatusCheckbox = (e) => {
+    setStatus(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      id.length !== 0 &&
+      name.length !== 0 &&
+      description.length !== 0 &&
+      isIdExisting(id, props.activities)
+    ) {
       console.log("it exists");
       const activitiesCopy = copyArray(props.activities);
-      updateActivity(activitiesCopy, values);
+      updateActivity(activitiesCopy, {
+        id,
+        name,
+        description,
+        status,
+      });
       props.setActivities(activitiesCopy);
     }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validation}
-      onSubmit={handleSubmit}
-    >
-      {(values) => (
-        <Form>
-          <div>
-            <label htmlFor="id">Id</label>
-            <Field type="text" id="id" name="id" placeholder="Id" />
-          </div>
-          <div>
-            <label htmlFor="name">Name</label>
-            <Field type="text" id="name" name="name" placeholder="Name" />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <Field
-              type="text"
-              id="description"
-              name="description"
-              placeholder="Description"
-            />
-          </div>
-          <div>
-            <label htmlFor="status">Status</label>
-            <Field type="checkbox" id="status" name="status" />
-          </div>
-          <input type="submit" value="Update" />
-        </Form>
-      )}
-    </Formik>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="id">Id</label>
+        <input
+          type="text"
+          pattern="[0-9]*"
+          id="id"
+          name="id"
+          placeholder="Id"
+          onChange={handleChangeIdField}
+        />
+      </div>
+      <div>
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name"
+          onChange={handleChangeNameField}
+        />
+      </div>
+      <div>
+        <label htmlFor="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          placeholder="Description"
+          onChange={handleChangeDescriptionField}
+        />
+      </div>
+      <div>
+        <label htmlFor="status">Status</label>
+        <input
+          type="checkbox"
+          id="status"
+          name="status"
+          onChange={handleChangeStatusCheckbox}
+        />
+      </div>
+      <input type="submit" value="Update" />
+    </form>
   );
 };
 
