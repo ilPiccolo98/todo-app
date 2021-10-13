@@ -1,12 +1,14 @@
 import React from "react";
 import App from "../../App";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-test("deleting activity", () => {
+test("deleting activity", async () => {
   const component = render(<App />);
   const deleteButtonApp = component.getByTestId("delete-button-app");
-  fireEvent.click(deleteButtonApp);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonApp);
+  });
   const idFieldDeleteActivity = component.getByTestId(
     "id-field-delete-activity"
   );
@@ -14,21 +16,27 @@ test("deleting activity", () => {
     "delete-button-delete-activity"
   );
   expect(idFieldDeleteActivity.value).toBe("");
-  fireEvent.change(idFieldDeleteActivity, {
-    target: {
-      value: "1",
-    },
+  await waitFor(() => {
+    fireEvent.change(idFieldDeleteActivity, {
+      target: {
+        value: "1",
+      },
+    });
   });
   expect(idFieldDeleteActivity.value).toBe("1");
-  fireEvent.click(deleteButtonDeleteActivity);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
+  });
   const tableBody = component.getByTestId("table-body");
   expect(tableBody.childElementCount).toBe(3);
 });
 
-test("deleting activity with id field blak", () => {
+test("deleting activity with id field blak", async () => {
   const component = render(<App />);
   const deleteButtonApp = component.getByTestId("delete-button-app");
-  fireEvent.click(deleteButtonApp);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonApp);
+  });
   const idFieldDeleteActivity = component.getByTestId(
     "id-field-delete-activity"
   );
@@ -36,15 +44,19 @@ test("deleting activity with id field blak", () => {
     "delete-button-delete-activity"
   );
   expect(idFieldDeleteActivity.value).toBe("");
-  fireEvent.click(deleteButtonDeleteActivity);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
+  });
   const tableBody = component.getByTestId("table-body");
   expect(tableBody.childElementCount).toBe(4);
 });
 
-test("deleting a not existing activity", () => {
+test("deleting a not existing activity", async () => {
   const component = render(<App />);
   const deleteButtonApp = component.getByTestId("delete-button-app");
-  fireEvent.click(deleteButtonApp);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonApp);
+  });
   const idFieldDeleteActivity = component.getByTestId(
     "id-field-delete-activity"
   );
@@ -52,13 +64,17 @@ test("deleting a not existing activity", () => {
     "delete-button-delete-activity"
   );
   expect(idFieldDeleteActivity.value).toBe("");
-  fireEvent.change(idFieldDeleteActivity, {
-    target: {
-      value: "10",
-    },
+  await waitFor(() => {
+    fireEvent.change(idFieldDeleteActivity, {
+      target: {
+        value: "10",
+      },
+    });
   });
   expect(idFieldDeleteActivity.value).toBe("10");
-  fireEvent.click(deleteButtonDeleteActivity);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
+  });
   const tableBody = component.getByTestId("table-body");
   expect(tableBody.childElementCount).toBe(4);
 });

@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { copyArray } from "../Utilities/Utilities";
+import { Formik, Form, Field } from "formik";
 
 const DeleteActivity = (props) => {
-  const [id, setId] = useState("");
-
-  const handleChangeIdField = (e) => {
-    e.preventDefault();
-    setId(e.target.value);
-  };
-
   const isIdExisting = (id, activities) => {
     const idFound = activities.filter((item) => {
       return parseInt(item.id) === parseInt(id);
@@ -16,48 +10,45 @@ const DeleteActivity = (props) => {
     return idFound.length ? true : false;
   };
 
-  const getPositionActivity = (id, activities) => {
-    const activityFound = activities.filter(
-      (item) => parseInt(item.id) === parseInt(id)
-    );
-    return activityFound[0];
+  const deleteActivity = (activities, id) => {
+    let position = -1;
+    for (let i = 0; i !== activities.length; ++i) {
+      if (parseInt(id) === parseInt(activities[i].id)) position = i;
+    }
+    activities.splice(position, 1);
   };
 
-  const deleteActivity = (activities, positionActivityToDelete) => {
-    activities.splice(positionActivityToDelete, 1);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isIdExisting(id, props.activities)) {
+  const handleSubmit = (values) => {
+    if (isIdExisting(values.id, props.activities)) {
       const activitiesCopy = copyArray(props.activities);
-      const positionActivityToDelete = getPositionActivity(id, activitiesCopy);
-      deleteActivity(activitiesCopy, positionActivityToDelete);
+      deleteActivity(activitiesCopy, values.id);
       props.setActivities(activitiesCopy);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="id">Id</label>
-        <input
-          data-testid="id-field-delete-activity"
-          type="text"
-          id="id"
-          name="id"
-          placeholder="Id"
-          patterm="[0-9]*"
-          onChange={handleChangeIdField}
-          value={id}
-        />
-      </div>
-      <input
-        data-testid="delete-button-delete-activity"
-        type="submit"
-        value="Delete"
-      />
-    </form>
+    <Formik initialValues={{ id: "" }} onSubmit={handleSubmit}>
+      {(values) => (
+        <Form>
+          <div>
+            <label htmlFor="id">Id</label>
+            <Field
+              data-testid="id-field-delete-activity"
+              type="text"
+              id="id"
+              name="id"
+              placeholder="Id"
+              patterm="[0-9]*"
+            />
+          </div>
+          <input
+            data-testid="delete-button-delete-activity"
+            type="submit"
+            value="Delete"
+          />
+        </Form>
+      )}
+    </Formik>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import App from "../../App";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 test("inserting new activity", () => {
@@ -109,34 +109,48 @@ test("adding activity with description black", () => {
   expect(tableBody.childElementCount).toBe(4);
 });
 
-test("deleting all the activities and add a new one", () => {
+test("deleting all the activities and add a new one", async () => {
   const component = render(<App />);
   const deleteButtonApp = component.getByTestId("delete-button-app");
-  fireEvent.click(deleteButtonApp);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonApp);
+  });
   const idFieldDeleteActivity = component.getByTestId(
     "id-field-delete-activity"
   );
   const deleteButtonDeleteActivity = component.getByTestId(
     "delete-button-delete-activity"
   );
-  fireEvent.change(idFieldDeleteActivity, {
-    target: {
-      value: "1",
-    },
+  await waitFor(() => {
+    fireEvent.change(idFieldDeleteActivity, {
+      target: {
+        value: "1",
+      },
+    });
   });
-  fireEvent.click(deleteButtonDeleteActivity);
-  fireEvent.change(idFieldDeleteActivity, {
-    target: {
-      value: "2",
-    },
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
   });
-  fireEvent.click(deleteButtonDeleteActivity);
-  fireEvent.change(idFieldDeleteActivity, {
-    target: {
-      value: "3",
-    },
+  await waitFor(() => {
+    fireEvent.change(idFieldDeleteActivity, {
+      target: {
+        value: "2",
+      },
+    });
   });
-  fireEvent.click(deleteButtonDeleteActivity);
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
+  });
+  await waitFor(() => {
+    fireEvent.change(idFieldDeleteActivity, {
+      target: {
+        value: "3",
+      },
+    });
+  });
+  await waitFor(() => {
+    fireEvent.click(deleteButtonDeleteActivity);
+  });
   const insertButtonApp = component.getByTestId("insert-button-app");
   fireEvent.click(insertButtonApp);
   const nameFieldAddActivity = component.getByTestId("name-field-add-activity");
