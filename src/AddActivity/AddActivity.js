@@ -21,6 +21,9 @@ const AddActivity = (props) => {
   };
 
   const generateNewActivityId = (activities) => {
+    if (activities.length === 0) {
+      return 1;
+    }
     return activities[props.activities.length - 1].id + 1;
   };
 

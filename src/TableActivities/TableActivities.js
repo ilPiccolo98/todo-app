@@ -6,7 +6,7 @@ const TableActivities = (props) => {
   return (
     <div>
       <table>
-        <tbody>
+        <tbody data-testid="table-body">
           <Header />
           <Body
             activities={props.activities}

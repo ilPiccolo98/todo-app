@@ -37,7 +37,7 @@ const UpdateActivity = (props) => {
   };
 
   const handleChangeStatusCheckbox = (e) => {
-    setStatus(e.target.value);
+    setStatus(e.target.checked);
   };
 
   const handleSubmit = (e) => {
@@ -48,7 +48,6 @@ const UpdateActivity = (props) => {
       description.length !== 0 &&
       isIdExisting(id, props.activities)
     ) {
-      console.log("it exists");
       const activitiesCopy = copyArray(props.activities);
       updateActivity(activitiesCopy, {
         id,
@@ -71,6 +70,7 @@ const UpdateActivity = (props) => {
           name="id"
           placeholder="Id"
           onChange={handleChangeIdField}
+          data-testid="id-field-update-activity"
         />
       </div>
       <div>
@@ -81,6 +81,7 @@ const UpdateActivity = (props) => {
           name="name"
           placeholder="Name"
           onChange={handleChangeNameField}
+          data-testid="name-field-update-activity"
         />
       </div>
       <div>
@@ -91,6 +92,7 @@ const UpdateActivity = (props) => {
           name="description"
           placeholder="Description"
           onChange={handleChangeDescriptionField}
+          data-testid="description-field-update-activity"
         />
       </div>
       <div>
@@ -100,9 +102,14 @@ const UpdateActivity = (props) => {
           id="status"
           name="status"
           onChange={handleChangeStatusCheckbox}
+          data-testid="status-checkbox-update-activity"
         />
       </div>
-      <input type="submit" value="Update" />
+      <input
+        type="submit"
+        value="Update"
+        data-testid="update-button-update-activity"
+      />
     </form>
   );
 };
