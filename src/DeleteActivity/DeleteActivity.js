@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { copyArray } from "../Utilities/Utilities";
 
 const DeleteActivity = (props) => {
-  const [id, setId] = useState(1);
+  const [id, setId] = useState("");
 
   const handleChangeIdField = (e) => {
     e.preventDefault();
@@ -10,7 +10,6 @@ const DeleteActivity = (props) => {
   };
 
   const isIdExisting = (id, activities) => {
-    console.log(activities);
     const idFound = activities.filter((item) => {
       return parseInt(item.id) === parseInt(id);
     });
@@ -18,12 +17,10 @@ const DeleteActivity = (props) => {
   };
 
   const getPositionActivity = (id, activities) => {
-    for (let i = 0; i !== activities.length; ++i) {
-      if (parseInt(activities[i].id) === parseInt(id)) {
-        return i;
-      }
-    }
-    return -1;
+    const activityFound = activities.filter(
+      (item) => parseInt(item.id) === parseInt(id)
+    );
+    return activityFound[0];
   };
 
   const deleteActivity = (activities, positionActivityToDelete) => {
@@ -50,7 +47,9 @@ const DeleteActivity = (props) => {
           id="id"
           name="id"
           placeholder="Id"
+          patterm="[0-9]*"
           onChange={handleChangeIdField}
+          value={id}
         />
       </div>
       <input

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { copyArray } from "../Utilities/Utilities";
 
 const UpdateActivity = (props) => {
-  const [id, setId] = useState("1");
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
@@ -71,6 +71,7 @@ const UpdateActivity = (props) => {
           placeholder="Id"
           onChange={handleChangeIdField}
           data-testid="id-field-update-activity"
+          value={id}
         />
       </div>
       <div>
@@ -82,6 +83,7 @@ const UpdateActivity = (props) => {
           placeholder="Name"
           onChange={handleChangeNameField}
           data-testid="name-field-update-activity"
+          value={name}
         />
       </div>
       <div>
@@ -93,6 +95,7 @@ const UpdateActivity = (props) => {
           placeholder="Description"
           onChange={handleChangeDescriptionField}
           data-testid="description-field-update-activity"
+          value={description}
         />
       </div>
       <div>
@@ -103,6 +106,7 @@ const UpdateActivity = (props) => {
           name="status"
           onChange={handleChangeStatusCheckbox}
           data-testid="status-checkbox-update-activity"
+          checked={status}
         />
       </div>
       <input
