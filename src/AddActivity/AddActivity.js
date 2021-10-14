@@ -62,7 +62,7 @@ const AddActivity = (props) => {
           data-testid="name-field-add-activity"
           id="name"
           name="name"
-          placeholder="errore"
+          placeholder="Name"
           onChange={handleChangeNameField}
           value={name}
         />

@@ -136,7 +136,7 @@ Object {
             data-testid="name-field-add-activity"
             id="name"
             name="name"
-            placeholder="errore"
+            placeholder="Name"
             value=""
           />
         </div>
@@ -313,7 +313,7 @@ Object {
           data-testid="name-field-add-activity"
           id="name"
           name="name"
-          placeholder="errore"
+          placeholder="Name"
           value=""
         />
       </div>

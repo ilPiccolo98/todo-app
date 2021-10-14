@@ -1,6 +1,7 @@
+/* eslint-disable jest/valid-title */
 import React from "react";
 import App from "../../App";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 const getAddTaskFormFields = (component) => {
@@ -15,30 +16,68 @@ const getAddTaskFormFields = (component) => {
     "insert-button-add-activity"
   );
 
-  return {nameFieldAddActivity, descriptionFieldAddActivity, statusCheckboxAddActivity, insertButtonAddActivity};
-}
+  return {
+    nameFieldAddActivity,
+    descriptionFieldAddActivity,
+    statusCheckboxAddActivity,
+    insertButtonAddActivity,
+  };
+};
+
+const getDeleteActivityFormFields = (component) => {
+  const idFieldDeleteActivity = component.getByTestId(
+    "id-field-delete-activity"
+  );
+  const deleteButtonDeleteActivity = component.getByTestId(
+    "delete-button-delete-activity"
+  );
+  return { idFieldDeleteActivity, deleteButtonDeleteActivity };
+};
+
+const getRowDataCells = (table, index) => {
+  const row = table.childNodes[index];
+  const idCellData = row.childNodes[0];
+  const nameCellData = row.childNodes[1];
+  const descriptionCellData = row.childNodes[2];
+  const statusCellData = row.childNodes[3];
+  return {
+    idCellData,
+    nameCellData,
+    descriptionCellData,
+    statusCellData,
+  };
+};
 
 describe("AddActivity Component", () => {
   it("should show the empty form after the insert button click", () => {
-    const component = render(<App/>);
+    const component = render(<App />);
     const insertButtonApp = component.getByTestId("insert-button-app");
 
     fireEvent.click(insertButtonApp);
 
-    const {nameFieldAddActivity, descriptionFieldAddActivity, statusCheckboxAddActivity} = getAddTaskFormFields(component);
+    const {
+      nameFieldAddActivity,
+      descriptionFieldAddActivity,
+      statusCheckboxAddActivity,
+    } = getAddTaskFormFields(component);
 
     expect(nameFieldAddActivity.value).toBe("");
     expect(descriptionFieldAddActivity.value).toBe("");
     expect(statusCheckboxAddActivity.checked).toBe(false);
     expect(component).toMatchSnapshot();
   });
-  it("inserting new activity", () => {
-    const component = render(<App/>);
+
+  it("should let you type data into the form after pressed insert button", () => {
+    const component = render(<App />);
     const insertButtonApp = component.getByTestId("insert-button-app");
 
     fireEvent.click(insertButtonApp);
 
-    const {nameFieldAddActivity, descriptionFieldAddActivity, statusCheckboxAddActivity, insertButtonAddActivity} = getAddTaskFormFields(component);
+    const {
+      nameFieldAddActivity,
+      descriptionFieldAddActivity,
+      statusCheckboxAddActivity,
+    } = getAddTaskFormFields(component);
 
     fireEvent.change(nameFieldAddActivity, {
       target: {
@@ -54,95 +93,94 @@ describe("AddActivity Component", () => {
     expect(nameFieldAddActivity.value).toBe("name new activity");
     expect(descriptionFieldAddActivity.value).toBe("description new activity");
     expect(statusCheckboxAddActivity.checked).toBe(true);
+  });
 
+  it("should let you insert a new activity", () => {
+    const component = render(<App />);
+    const insertButtonApp = component.getByTestId("insert-button-app");
 
+    fireEvent.click(insertButtonApp);
+
+    const {
+      nameFieldAddActivity,
+      descriptionFieldAddActivity,
+      statusCheckboxAddActivity,
+      insertButtonAddActivity,
+    } = getAddTaskFormFields(component);
+
+    fireEvent.change(nameFieldAddActivity, {
+      target: {
+        value: "name new activity",
+      },
+    });
+    fireEvent.change(descriptionFieldAddActivity, {
+      target: {
+        value: "description new activity",
+      },
+    });
+    fireEvent.click(statusCheckboxAddActivity);
     fireEvent.click(insertButtonAddActivity);
     const tableBody = component.getByTestId("table-body");
-    const lastRow = tableBody.childNodes[tableBody.childElementCount - 1];
-    const idCellData = lastRow.childNodes[0];
-    const nameCellData = lastRow.childNodes[1];
-    const descriptionCellData = lastRow.childNodes[2];
-    const statusCellData = lastRow.childNodes[3];
+    const { idCellData, nameCellData, descriptionCellData, statusCellData } =
+      getRowDataCells(tableBody, tableBody.childElementCount - 1);
+
     expect(idCellData.textContent).toBe("4");
     expect(nameCellData.textContent).toBe("name new activity");
     expect(descriptionCellData.textContent).toBe("description new activity");
     expect(statusCellData.textContent).toBe("true");
   });
 
-  it("adding activity with name black", () => {
+  it("shouldn't let you add an activity with name field blank", () => {
     const component = render(<App />);
     const insertButtonApp = component.getByTestId("insert-button-app");
     fireEvent.click(insertButtonApp);
-    const nameFieldAddActivity = component.getByTestId("name-field-add-activity");
-    const descriptionFieldAddActivity = component.getByTestId(
-      "description-field-add-activity"
-    );
-    const statusCheckboxAddActivity = component.getByTestId(
-      "status-checkbox-add-activity"
-    );
-    const insertButtonAddActivity = component.getByTestId(
-      "insert-button-add-activity"
-    );
-    expect(nameFieldAddActivity.value).toBe("");
-    expect(descriptionFieldAddActivity.value).toBe("");
-    expect(statusCheckboxAddActivity.checked).toBe(false);
+    const {
+      descriptionFieldAddActivity,
+      statusCheckboxAddActivity,
+      insertButtonAddActivity,
+    } = getAddTaskFormFields(component);
+
     fireEvent.change(descriptionFieldAddActivity, {
       target: {
         value: "description new activity",
       },
     });
     fireEvent.click(statusCheckboxAddActivity);
-    expect(nameFieldAddActivity.value).toBe("");
-    expect(descriptionFieldAddActivity.value).toBe("description new activity");
-    expect(statusCheckboxAddActivity.checked).toBe(true);
     fireEvent.click(insertButtonAddActivity);
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
   });
 
-  it("adding activity with description black", () => {
+  it("shouldn't let you add an activity with description field blank", () => {
     const component = render(<App />);
     const insertButtonApp = component.getByTestId("insert-button-app");
     fireEvent.click(insertButtonApp);
-    const nameFieldAddActivity = component.getByTestId("name-field-add-activity");
-    const descriptionFieldAddActivity = component.getByTestId(
-      "description-field-add-activity"
-    );
-    const statusCheckboxAddActivity = component.getByTestId(
-      "status-checkbox-add-activity"
-    );
-    const insertButtonAddActivity = component.getByTestId(
-      "insert-button-add-activity"
-    );
-    expect(nameFieldAddActivity.value).toBe("");
-    expect(descriptionFieldAddActivity.value).toBe("");
-    expect(statusCheckboxAddActivity.checked).toBe(false);
+    const {
+      nameFieldAddActivity,
+      statusCheckboxAddActivity,
+      insertButtonAddActivity,
+    } = getAddTaskFormFields(component);
+
     fireEvent.change(nameFieldAddActivity, {
       target: {
         value: "name new activity",
       },
     });
     fireEvent.click(statusCheckboxAddActivity);
-    expect(nameFieldAddActivity.value).toBe("name new activity");
-    expect(descriptionFieldAddActivity.value).toBe("");
-    expect(statusCheckboxAddActivity.checked).toBe(true);
     fireEvent.click(insertButtonAddActivity);
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
   });
 
-  it("deleting all the activities and add a new one", async () => {
+  it("should delete all the activities and add a new one", async () => {
     const component = render(<App />);
     const deleteButtonApp = component.getByTestId("delete-button-app");
     await waitFor(() => {
       fireEvent.click(deleteButtonApp);
     });
-    const idFieldDeleteActivity = component.getByTestId(
-      "id-field-delete-activity"
-    );
-    const deleteButtonDeleteActivity = component.getByTestId(
-      "delete-button-delete-activity"
-    );
+    const { idFieldDeleteActivity, deleteButtonDeleteActivity } =
+      getDeleteActivityFormFields(component);
+
     await waitFor(() => {
       fireEvent.change(idFieldDeleteActivity, {
         target: {
@@ -173,18 +211,16 @@ describe("AddActivity Component", () => {
     await waitFor(() => {
       fireEvent.click(deleteButtonDeleteActivity);
     });
+
     const insertButtonApp = component.getByTestId("insert-button-app");
     fireEvent.click(insertButtonApp);
-    const nameFieldAddActivity = component.getByTestId("name-field-add-activity");
-    const descriptionFieldAddActivity = component.getByTestId(
-      "description-field-add-activity"
-    );
-    const statusCheckboxAddActivity = component.getByTestId(
-      "status-checkbox-add-activity"
-    );
-    const insertButtonAddActivity = component.getByTestId(
-      "insert-button-add-activity"
-    );
+    const {
+      nameFieldAddActivity,
+      descriptionFieldAddActivity,
+      statusCheckboxAddActivity,
+      insertButtonAddActivity,
+    } = getAddTaskFormFields(component);
+
     fireEvent.change(nameFieldAddActivity, {
       target: {
         value: "name new activity",
@@ -197,14 +233,15 @@ describe("AddActivity Component", () => {
     });
     fireEvent.click(statusCheckboxAddActivity);
     fireEvent.click(insertButtonAddActivity);
-    const idNewActivity = component.getByTestId("td-id-1");
-    const nameNewActivity = component.getByTestId("td-name-1");
-    const descriptionNewActivity = component.getByTestId("td-description-1");
-    const statusNewActivity = component.getByTestId("td-status-1");
-    expect(idNewActivity.textContent).toBe("1");
-    expect(nameNewActivity.textContent).toBe("name new activity");
-    expect(descriptionNewActivity.textContent).toBe("description new activity");
-    expect(statusNewActivity.textContent).toBe("true");
+
+    const tableBody = component.getByTestId("table-body");
+
+    const { idCellData, nameCellData, descriptionCellData, statusCellData } =
+      getRowDataCells(tableBody, 1);
+
+    expect(idCellData.textContent).toBe("1");
+    expect(nameCellData.textContent).toBe("name new activity");
+    expect(descriptionCellData.textContent).toBe("description new activity");
+    expect(statusCellData.textContent).toBe("true");
   });
 });
-

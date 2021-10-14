@@ -3,78 +3,127 @@ import App from "../../App";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-test("deleting activity", async () => {
-  const component = render(<App />);
-  const deleteButtonApp = component.getByTestId("delete-button-app");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonApp);
-  });
+const getDeleteActvityFormComponents = (component) => {
   const idFieldDeleteActivity = component.getByTestId(
     "id-field-delete-activity"
   );
   const deleteButtonDeleteActivity = component.getByTestId(
     "delete-button-delete-activity"
   );
-  expect(idFieldDeleteActivity.value).toBe("");
-  await waitFor(() => {
-    fireEvent.change(idFieldDeleteActivity, {
-      target: {
-        value: "1",
-      },
-    });
-  });
-  expect(idFieldDeleteActivity.value).toBe("1");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonDeleteActivity);
-  });
-  const tableBody = component.getByTestId("table-body");
-  expect(tableBody.childElementCount).toBe(3);
-});
+  return { idFieldDeleteActivity, deleteButtonDeleteActivity };
+};
 
-test("deleting activity with id field blak", async () => {
-  const component = render(<App />);
-  const deleteButtonApp = component.getByTestId("delete-button-app");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonApp);
-  });
-  const idFieldDeleteActivity = component.getByTestId(
-    "id-field-delete-activity"
-  );
-  const deleteButtonDeleteActivity = component.getByTestId(
-    "delete-button-delete-activity"
-  );
-  expect(idFieldDeleteActivity.value).toBe("");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonDeleteActivity);
-  });
-  const tableBody = component.getByTestId("table-body");
-  expect(tableBody.childElementCount).toBe(4);
-});
+const getRowDataCells = (table, index) => {
+  const row = table.childNodes[index];
+  const idCellData = row.childNodes[0];
+  const nameCellData = row.childNodes[1];
+  const descriptionCellData = row.childNodes[2];
+  const statusCellData = row.childNodes[3];
+  return {
+    idCellData,
+    nameCellData,
+    descriptionCellData,
+    statusCellData,
+  };
+};
 
-test("deleting a not existing activity", async () => {
-  const component = render(<App />);
-  const deleteButtonApp = component.getByTestId("delete-button-app");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonApp);
-  });
-  const idFieldDeleteActivity = component.getByTestId(
-    "id-field-delete-activity"
-  );
-  const deleteButtonDeleteActivity = component.getByTestId(
-    "delete-button-delete-activity"
-  );
-  expect(idFieldDeleteActivity.value).toBe("");
-  await waitFor(() => {
-    fireEvent.change(idFieldDeleteActivity, {
-      target: {
-        value: "10",
-      },
+describe("DeleteActivity Component", () => {
+  it("should show the DeleteActivity form empty after pressed the delete button", async () => {
+    const component = render(<App />);
+    const deleteButtonApp = component.getByTestId("delete-button-app");
+    await waitFor(() => {
+      fireEvent.click(deleteButtonApp);
     });
+
+    const { idFieldDeleteActivity } = getDeleteActvityFormComponents(component);
+
+    expect(idFieldDeleteActivity.value).toBe("");
   });
-  expect(idFieldDeleteActivity.value).toBe("10");
-  await waitFor(() => {
-    fireEvent.click(deleteButtonDeleteActivity);
+
+  it("should let you type data into the form after pressed the delete button", async () => {
+    const component = render(<App />);
+    const deleteButtonApp = component.getByTestId("delete-button-app");
+    await waitFor(() => {
+      fireEvent.click(deleteButtonApp);
+    });
+
+    const { idFieldDeleteActivity } = getDeleteActvityFormComponents(component);
+
+    await waitFor(() => {
+      fireEvent.change(idFieldDeleteActivity, {
+        target: {
+          value: "1",
+        },
+      });
+    });
+    expect(idFieldDeleteActivity.value).toBe("1");
   });
-  const tableBody = component.getByTestId("table-body");
-  expect(tableBody.childElementCount).toBe(4);
+
+  it("should let you delete an activity using the DeleteActivity component", async () => {
+    const component = render(<App />);
+    const deleteButtonApp = component.getByTestId("delete-button-app");
+    await waitFor(() => {
+      fireEvent.click(deleteButtonApp);
+    });
+
+    const { idFieldDeleteActivity, deleteButtonDeleteActivity } =
+      getDeleteActvityFormComponents(component);
+
+    await waitFor(() => {
+      fireEvent.change(idFieldDeleteActivity, {
+        target: {
+          value: "1",
+        },
+      });
+    });
+
+    await waitFor(() => {
+      fireEvent.click(deleteButtonDeleteActivity);
+    });
+    const tableBody = component.getByTestId("table-body");
+    const { idCellData } = getRowDataCells(tableBody, 1);
+    expect(idCellData.textContent).not.toBe("1");
+  });
+
+  it("shouldn't let you delete an activity with id field blank", async () => {
+    const component = render(<App />);
+    const deleteButtonApp = component.getByTestId("delete-button-app");
+    await waitFor(() => {
+      fireEvent.click(deleteButtonApp);
+    });
+
+    const { deleteButtonDeleteActivity } =
+      getDeleteActvityFormComponents(component);
+
+    await waitFor(() => {
+      fireEvent.click(deleteButtonDeleteActivity);
+    });
+    const tableBody = component.getByTestId("table-body");
+    expect(tableBody.childElementCount).toBe(4);
+  });
+
+  it("shouldn't delete a not existing activity", async () => {
+    const component = render(<App />);
+    const deleteButtonApp = component.getByTestId("delete-button-app");
+    await waitFor(() => {
+      fireEvent.click(deleteButtonApp);
+    });
+
+    const { idFieldDeleteActivity, deleteButtonDeleteActivity } =
+      getDeleteActvityFormComponents(component);
+
+    await waitFor(() => {
+      fireEvent.change(idFieldDeleteActivity, {
+        target: {
+          value: "20",
+        },
+      });
+    });
+
+    await waitFor(() => {
+      fireEvent.click(deleteButtonDeleteActivity);
+    });
+    const tableBody = component.getByTestId("table-body");
+    expect(tableBody.childElementCount).toBe(4);
+  });
 });
