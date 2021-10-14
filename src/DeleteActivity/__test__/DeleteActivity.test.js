@@ -38,6 +38,7 @@ describe("DeleteActivity Component", () => {
     const { idFieldDeleteActivity } = getDeleteActvityFormComponents(component);
 
     expect(idFieldDeleteActivity.value).toBe("");
+    expect(component).toMatchSnapshot();
   });
 
   it("should let you type data into the form after pressed the delete button", async () => {

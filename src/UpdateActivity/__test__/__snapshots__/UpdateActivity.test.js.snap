@@ -1,0 +1,434 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateActivity component should show UpdateActivity form empty after pressed the update button 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <table>
+          <tbody
+            data-testid="table-body"
+          >
+            <tr>
+              <th>
+                Id
+              </th>
+              <th>
+                Name
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Status
+              </th>
+            </tr>
+            <tr>
+              <td
+                data-testid="td-id-1"
+              >
+                1
+              </td>
+              <td
+                data-testid="td-name-1"
+              >
+                shopping
+              </td>
+              <td
+                data-testid="td-description-1"
+              >
+                buy some stuff
+              </td>
+              <td
+                data-testid="td-status-1"
+              >
+                false
+              </td>
+            </tr>
+            <tr>
+              <td
+                data-testid="td-id-2"
+              >
+                2
+              </td>
+              <td
+                data-testid="td-name-2"
+              >
+                have fun with my dog
+              </td>
+              <td
+                data-testid="td-description-2"
+              >
+                take my dog for a walk and have fun with it
+              </td>
+              <td
+                data-testid="td-status-2"
+              >
+                true
+              </td>
+            </tr>
+            <tr>
+              <td
+                data-testid="td-id-3"
+              >
+                3
+              </td>
+              <td
+                data-testid="td-name-3"
+              >
+                work out
+              </td>
+              <td
+                data-testid="td-description-3"
+              >
+                work out a little bit with weights and barbells
+              </td>
+              <td
+                data-testid="td-status-3"
+              >
+                false
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="buttons-panel"
+      >
+        <a
+          href="/add-activity"
+        >
+          <input
+            data-testid="insert-button-app"
+            type="button"
+            value="Insert activity"
+          />
+        </a>
+        <a
+          href="/update-activity"
+        >
+          <input
+            data-testid="update-button-app"
+            type="button"
+            value="Update activity"
+          />
+        </a>
+        <a
+          href="/delete-activity"
+        >
+          <input
+            data-testid="delete-button-app"
+            type="button"
+            value="Delete activity"
+          />
+        </a>
+      </div>
+      <form>
+        <div>
+          <label
+            for="id"
+          >
+            Id
+          </label>
+          <input
+            data-testid="id-field-update-activity"
+            id="id"
+            name="id"
+            pattern="[0-9]*"
+            placeholder="Id"
+            type="text"
+            value=""
+          />
+        </div>
+        <div>
+          <label
+            for="name"
+          >
+            Name
+          </label>
+          <input
+            data-testid="name-field-update-activity"
+            id="name"
+            name="name"
+            placeholder="Name"
+            type="text"
+            value=""
+          />
+        </div>
+        <div>
+          <label
+            for="description"
+          >
+            Description
+          </label>
+          <input
+            data-testid="description-field-update-activity"
+            id="description"
+            name="description"
+            placeholder="Description"
+            type="text"
+            value=""
+          />
+        </div>
+        <div>
+          <label
+            for="status"
+          >
+            Status
+          </label>
+          <input
+            data-testid="status-checkbox-update-activity"
+            id="status"
+            name="status"
+            type="checkbox"
+          />
+        </div>
+        <input
+          data-testid="update-button-update-activity"
+          type="submit"
+          value="Update"
+        />
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <table>
+        <tbody
+          data-testid="table-body"
+        >
+          <tr>
+            <th>
+              Id
+            </th>
+            <th>
+              Name
+            </th>
+            <th>
+              Description
+            </th>
+            <th>
+              Status
+            </th>
+          </tr>
+          <tr>
+            <td
+              data-testid="td-id-1"
+            >
+              1
+            </td>
+            <td
+              data-testid="td-name-1"
+            >
+              shopping
+            </td>
+            <td
+              data-testid="td-description-1"
+            >
+              buy some stuff
+            </td>
+            <td
+              data-testid="td-status-1"
+            >
+              false
+            </td>
+          </tr>
+          <tr>
+            <td
+              data-testid="td-id-2"
+            >
+              2
+            </td>
+            <td
+              data-testid="td-name-2"
+            >
+              have fun with my dog
+            </td>
+            <td
+              data-testid="td-description-2"
+            >
+              take my dog for a walk and have fun with it
+            </td>
+            <td
+              data-testid="td-status-2"
+            >
+              true
+            </td>
+          </tr>
+          <tr>
+            <td
+              data-testid="td-id-3"
+            >
+              3
+            </td>
+            <td
+              data-testid="td-name-3"
+            >
+              work out
+            </td>
+            <td
+              data-testid="td-description-3"
+            >
+              work out a little bit with weights and barbells
+            </td>
+            <td
+              data-testid="td-status-3"
+            >
+              false
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="buttons-panel"
+    >
+      <a
+        href="/add-activity"
+      >
+        <input
+          data-testid="insert-button-app"
+          type="button"
+          value="Insert activity"
+        />
+      </a>
+      <a
+        href="/update-activity"
+      >
+        <input
+          data-testid="update-button-app"
+          type="button"
+          value="Update activity"
+        />
+      </a>
+      <a
+        href="/delete-activity"
+      >
+        <input
+          data-testid="delete-button-app"
+          type="button"
+          value="Delete activity"
+        />
+      </a>
+    </div>
+    <form>
+      <div>
+        <label
+          for="id"
+        >
+          Id
+        </label>
+        <input
+          data-testid="id-field-update-activity"
+          id="id"
+          name="id"
+          pattern="[0-9]*"
+          placeholder="Id"
+          type="text"
+          value=""
+        />
+      </div>
+      <div>
+        <label
+          for="name"
+        >
+          Name
+        </label>
+        <input
+          data-testid="name-field-update-activity"
+          id="name"
+          name="name"
+          placeholder="Name"
+          type="text"
+          value=""
+        />
+      </div>
+      <div>
+        <label
+          for="description"
+        >
+          Description
+        </label>
+        <input
+          data-testid="description-field-update-activity"
+          id="description"
+          name="description"
+          placeholder="Description"
+          type="text"
+          value=""
+        />
+      </div>
+      <div>
+        <label
+          for="status"
+        >
+          Status
+        </label>
+        <input
+          data-testid="status-checkbox-update-activity"
+          id="status"
+          name="status"
+          type="checkbox"
+        />
+      </div>
+      <input
+        data-testid="update-button-update-activity"
+        type="submit"
+        value="Update"
+      />
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

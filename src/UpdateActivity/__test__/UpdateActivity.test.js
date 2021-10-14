@@ -58,6 +58,7 @@ describe("UpdateActivity component", () => {
     expect(nameFieldUpdateActivity.value).toBe("");
     expect(descriptionFieldUpdateActivity.value).toBe("");
     expect(statusCheckboxUpdateActivity.checked).toBe(false);
+    expect(component).toMatchSnapshot();
   });
 
   it("should let you type data into the UpdateActivity form", () => {

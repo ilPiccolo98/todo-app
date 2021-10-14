@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-title */
 import React from "react";
 import App from "../../App";
-import { fireEvent, render, waitFor, screen } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 const getAddTaskFormFields = (component) => {
