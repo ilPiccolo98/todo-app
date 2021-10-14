@@ -58,6 +58,7 @@ describe("DeleteActivity Component", () => {
       });
     });
     expect(idFieldDeleteActivity.value).toBe("1");
+    expect(component).toMatchSnapshot();
   });
 
   it("should let you delete an activity using the DeleteActivity component", async () => {
@@ -84,6 +85,7 @@ describe("DeleteActivity Component", () => {
     const tableBody = component.getByTestId("table-body");
     const { idCellData } = getRowDataCells(tableBody, 1);
     expect(idCellData.textContent).not.toBe("1");
+    expect(component).toMatchSnapshot();
   });
 
   it("shouldn't let you delete an activity with id field blank", async () => {
@@ -101,6 +103,7 @@ describe("DeleteActivity Component", () => {
     });
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
+    expect(component).toMatchSnapshot();
   });
 
   it("shouldn't delete a not existing activity", async () => {
@@ -126,5 +129,6 @@ describe("DeleteActivity Component", () => {
     });
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
+    expect(component).toMatchSnapshot();
   });
 });

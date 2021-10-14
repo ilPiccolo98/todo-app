@@ -93,6 +93,7 @@ describe("UpdateActivity component", () => {
     expect(nameFieldUpdateActivity.value).toBe("updated name");
     expect(descriptionFieldUpdateActivity.value).toBe("updated description");
     expect(statusCheckboxUpdateActivity.checked).toBe(true);
+    expect(component).toMatchSnapshot();
   });
 
   it("should let you update an activity by using the UpdateActivity form", () => {
@@ -131,6 +132,7 @@ describe("UpdateActivity component", () => {
     expect(nameCellData.textContent).toBe("updated name");
     expect(descriptionCellData.textContent).toBe("updated description");
     expect(statusCellData.textContent).toBe("true");
+    expect(component).toMatchSnapshot();
   });
 
   it("shouldn't let you update a not existing activity", () => {
@@ -171,5 +173,6 @@ describe("UpdateActivity component", () => {
       expect(nameCellData.textContent).not.toBe("updated name");
       expect(descriptionCellData.textContent).not.toBe("updated description");
     }
+    expect(component).toMatchSnapshot();
   });
 });

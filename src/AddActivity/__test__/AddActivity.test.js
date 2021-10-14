@@ -93,6 +93,7 @@ describe("AddActivity Component", () => {
     expect(nameFieldAddActivity.value).toBe("name new activity");
     expect(descriptionFieldAddActivity.value).toBe("description new activity");
     expect(statusCheckboxAddActivity.checked).toBe(true);
+    expect(component).toMatchSnapshot();
   });
 
   it("should let you insert a new activity", () => {
@@ -128,6 +129,7 @@ describe("AddActivity Component", () => {
     expect(nameCellData.textContent).toBe("name new activity");
     expect(descriptionCellData.textContent).toBe("description new activity");
     expect(statusCellData.textContent).toBe("true");
+    expect(component).toMatchSnapshot();
   });
 
   it("shouldn't let you add an activity with name field blank", () => {
@@ -149,6 +151,7 @@ describe("AddActivity Component", () => {
     fireEvent.click(insertButtonAddActivity);
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
+    expect(component).toMatchSnapshot();
   });
 
   it("shouldn't let you add an activity with description field blank", () => {
@@ -170,6 +173,7 @@ describe("AddActivity Component", () => {
     fireEvent.click(insertButtonAddActivity);
     const tableBody = component.getByTestId("table-body");
     expect(tableBody.childElementCount).toBe(4);
+    expect(component).toMatchSnapshot();
   });
 
   it("should delete all the activities and add a new one", async () => {
@@ -243,5 +247,6 @@ describe("AddActivity Component", () => {
     expect(nameCellData.textContent).toBe("name new activity");
     expect(descriptionCellData.textContent).toBe("description new activity");
     expect(statusCellData.textContent).toBe("true");
+    expect(component).toMatchSnapshot();
   });
 });
