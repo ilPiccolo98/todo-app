@@ -2,31 +2,14 @@ import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
 import TableActivities from "./TableActivities/TableActivities";
 import AddActivity from "./AddActivity/AddActivity";
 import "./App.css";
+import defaultActivities from "./activities";
 import { useState } from "react";
 import UpdateActivity from "./UpdateActivity/UpdateActivity";
 import DeleteActivity from "./DeleteActivity/DeleteActivity";
 
 function App() {
-  const [activities, setActivities] = useState([
-    {
-      id: 1,
-      name: "shopping",
-      description: "buy some stuff",
-      status: false,
-    },
-    {
-      id: 2,
-      name: "have fun with my dog",
-      description: "take my dog for a walk and have fun with it",
-      status: true,
-    },
-    {
-      id: 3,
-      name: "work out",
-      description: "work out a little bit with weights and barbells",
-      status: false,
-    },
-  ]);
+  console.log(defaultActivities);
+  const [activities, setActivities] = useState(defaultActivities);
   return (
     <BrowserRouter>
       <TableActivities activities={activities} setActivities={setActivities} />

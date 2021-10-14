@@ -1,7 +1,25 @@
 import React from "react";
 import App from "../../App";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, act } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+
+const mockedActivities = jest.fn();
+mockedActivities.mockReturnValue([]);
+jest.mock("../../activities", () => mockedActivities());
+/* () => [
+  {
+    id: 1,
+    name: "shopping",
+    description: "buy some stuff",
+    status: false,
+  },
+  {
+    id: 2,
+    name: "have fun with my dog",
+    description: "take my dog for a walk and have fun with it",
+    status: true,
+  },
+]);*/
 
 const getDeleteActvityFormComponents = (component) => {
   const idFieldDeleteActivity = component.getByTestId(
@@ -28,10 +46,26 @@ const getRowDataCells = (table, index) => {
 };
 
 describe("DeleteActivity Component", () => {
+  beforeEach(() => {
+    mockedActivities.mockReset().mockReturnValue([
+      {
+        id: 1,
+        name: "shopping",
+        description: "buy some stuff",
+        status: false,
+      },
+      {
+        id: 2,
+        name: "have fun with my dog",
+        description: "take my dog for a walk and have fun with it",
+        status: true,
+      },
+    ]);
+  });
   it("should show the DeleteActivity form empty after pressed the delete button", async () => {
     const component = render(<App />);
     const deleteButtonApp = component.getByTestId("delete-button-app");
-    await waitFor(() => {
+    act(() => {
       fireEvent.click(deleteButtonApp);
     });
 
