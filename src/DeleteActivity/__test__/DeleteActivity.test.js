@@ -125,6 +125,7 @@ describe("DeleteActivity Component", () => {
   it("shouldn't let you delete an activity with id field blank", async () => {
     const component = render(<App />);
     const deleteButtonApp = component.getByTestId("delete-button-app");
+    // expect(component.queryByText("false")).toBeNull();
     await waitFor(() => {
       fireEvent.click(deleteButtonApp);
     });
