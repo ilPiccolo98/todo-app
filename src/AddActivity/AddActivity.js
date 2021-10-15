@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { connect } from "react-redux";
+import { ADD } from "../store/actions";
 
 const AddActivity = (props) => {
   const [name, setName] = useState("");
@@ -99,7 +100,7 @@ const mapStateToProps = (stateActivities) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addNewActivity: (newActivity) => dispatch({ type: "ADD", newActivity }),
+    addNewActivity: (newActivity) => dispatch({ type: ADD, newActivity }),
   };
 };
 

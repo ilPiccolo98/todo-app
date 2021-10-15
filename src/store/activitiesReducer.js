@@ -1,3 +1,5 @@
+import * as actionTypes from "./actions";
+
 const initialActivities = [
   {
     id: 1,
@@ -54,11 +56,11 @@ const updateActivity = (activities, updatedActivity) => {
 
 const activitiesReducer = (activities = initialActivities, action) => {
   switch (action.type) {
-    case "DELETE":
+    case actionTypes.DELETE:
       return deleteActivity(activities, action.id);
-    case "ADD":
+    case actionTypes.ADD:
       return addActivity(activities, action.newActivity);
-    case "UPDATE":
+    case actionTypes.UPDATE:
       return updateActivity(activities, action.updatedActivity);
     default:
       return activities;

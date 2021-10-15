@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { UPDATE } from "../store/actions";
 
 const UpdateActivity = (props) => {
   const [id, setId] = useState("");
@@ -118,7 +119,7 @@ const mapStateToProps = (stateActivity) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateActivity: (updatedActivity) =>
-      dispatch({ type: "UPDATE", updatedActivity }),
+      dispatch({ type: UPDATE, updatedActivity }),
   };
 };
 

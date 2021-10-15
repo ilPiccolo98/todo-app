@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import { connect } from "react-redux";
+import { DELETE } from "../store/actions";
 
 const DeleteActivity = (props) => {
   const isIdExisting = (id, activities) => {
@@ -50,7 +51,7 @@ const mapStateToProps = (stateActivities) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteActivity: (id) => dispatch({ type: "DELETE", id }),
+    deleteActivity: (id) => dispatch({ type: DELETE, id }),
   };
 };
 
