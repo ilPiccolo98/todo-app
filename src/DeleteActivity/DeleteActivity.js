@@ -1,6 +1,6 @@
 import React from "react";
-import { copyArray } from "../Utilities/Utilities";
 import { Formik, Form, Field } from "formik";
+import { connect } from "react-redux";
 
 const DeleteActivity = (props) => {
   const isIdExisting = (id, activities) => {
@@ -10,19 +10,9 @@ const DeleteActivity = (props) => {
     return idFound.length ? true : false;
   };
 
-  const deleteActivity = (activities, id) => {
-    let position = -1;
-    for (let i = 0; i !== activities.length; ++i) {
-      if (parseInt(id) === parseInt(activities[i].id)) position = i;
-    }
-    activities.splice(position, 1);
-  };
-
   const handleSubmit = (values) => {
     if (isIdExisting(values.id, props.activities)) {
-      const activitiesCopy = copyArray(props.activities);
-      deleteActivity(activitiesCopy, values.id);
-      props.setActivities(activitiesCopy);
+      props.deleteActivity(values.id);
     }
   };
 
@@ -52,4 +42,16 @@ const DeleteActivity = (props) => {
   );
 };
 
-export default DeleteActivity;
+const mapStateToProps = (stateActivities) => {
+  return {
+    activities: stateActivities.slice(0),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteActivity: (id) => dispatch({ type: "DELETE", id }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteActivity);

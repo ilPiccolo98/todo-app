@@ -8,10 +8,7 @@ const TableActivities = (props) => {
       <table>
         <tbody data-testid="table-body">
           <Header />
-          <Body
-            activities={props.activities}
-            setActivities={props.setActivities}
-          />
+          <Body />
         </tbody>
       </table>
     </div>

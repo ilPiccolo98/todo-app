@@ -1,4 +1,5 @@
 import { React } from "react";
+import { connect } from "react-redux";
 
 const Body = (props) => {
   return props.activities.map((item) => (
@@ -11,4 +12,10 @@ const Body = (props) => {
   ));
 };
 
-export default Body;
+const mapStateToProps = (stateActivities) => {
+  return {
+    activities: stateActivities,
+  };
+};
+
+export default connect(mapStateToProps)(Body);

@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { copyArray } from "../Utilities/Utilities";
+import { connect } from "react-redux";
 
 const AddActivity = (props) => {
   const [name, setName] = useState("");
@@ -20,20 +20,8 @@ const AddActivity = (props) => {
     setStatus(e.target.checked);
   };
 
-  const generateNewActivityId = (activities) => {
-    if (activities.length === 0) {
-      return 1;
-    }
-    return activities[props.activities.length - 1].id + 1;
-  };
-
-  const addNewActivity = (activities, newActivity) => {
-    activities.push(newActivity);
-  };
-
-  const createNewActivity = (id, name, description, status) => {
+  const createNewActivity = (name, description, status) => {
     return {
-      id,
       name,
       description,
       status,
@@ -43,13 +31,7 @@ const AddActivity = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length !== 0 && description.length !== 0) {
-      const newId = generateNewActivityId(props.activities);
-      const activitiesCopy = copyArray(props.activities);
-      addNewActivity(
-        activitiesCopy,
-        createNewActivity(newId, name, description, status)
-      );
-      props.setActivities(activitiesCopy);
+      props.addNewActivity(createNewActivity(name, description, status));
     }
   };
   return (
@@ -109,4 +91,16 @@ const AddActivity = (props) => {
   );
 };
 
-export default AddActivity;
+const mapStateToProps = (stateActivities) => {
+  return {
+    activities: stateActivities,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addNewActivity: (newActivity) => dispatch({ type: "ADD", newActivity }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddActivity);

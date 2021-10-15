@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { copyArray } from "../Utilities/Utilities";
+import { connect } from "react-redux";
 
 const UpdateActivity = (props) => {
   const [id, setId] = useState("");
@@ -12,13 +12,6 @@ const UpdateActivity = (props) => {
       (item) => parseInt(item.id) === parseInt(id)
     );
     return idFound.length ? true : false;
-  };
-
-  const updateActivity = (activities, updatedActivity) => {
-    for (let i = 0; i !== activities.length; ++i) {
-      if (parseInt(activities[i].id) === parseInt(updatedActivity.id))
-        activities[i] = updatedActivity;
-    }
   };
 
   const handleChangeIdField = (e) => {
@@ -48,14 +41,12 @@ const UpdateActivity = (props) => {
       description.length !== 0 &&
       isIdExisting(id, props.activities)
     ) {
-      const activitiesCopy = copyArray(props.activities);
-      updateActivity(activitiesCopy, {
+      props.updateActivity({
         id,
         name,
         description,
         status,
       });
-      props.setActivities(activitiesCopy);
     }
   };
 
@@ -118,4 +109,17 @@ const UpdateActivity = (props) => {
   );
 };
 
-export default UpdateActivity;
+const mapStateToProps = (stateActivity) => {
+  return {
+    activities: stateActivity,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateActivity: (updatedActivity) =>
+      dispatch({ type: "UPDATE", updatedActivity }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateActivity);
