@@ -1,9 +1,12 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { connect } from "react-redux";
-import { DELETE } from "../store/actions";
+import { deleteActivity } from "../store/activitiesReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const DeleteActivity = (props) => {
+  const dispatch = useDispatch();
+  const activities = useSelector((state) => state.activities);
+
   const isIdExisting = (id, activities) => {
     const idFound = activities.filter((item) => {
       return parseInt(item.id) === parseInt(id);
@@ -12,8 +15,8 @@ const DeleteActivity = (props) => {
   };
 
   const handleSubmit = (values) => {
-    if (isIdExisting(values.id, props.activities)) {
-      props.deleteActivity(values.id);
+    if (isIdExisting(values.id, activities)) {
+      dispatch(deleteActivity(values.id));
     }
   };
 
@@ -43,16 +46,4 @@ const DeleteActivity = (props) => {
   );
 };
 
-const mapStateToProps = (stateActivities) => {
-  return {
-    activities: stateActivities.slice(0),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deleteActivity: (id) => dispatch({ type: DELETE, id }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteActivity);
+export default DeleteActivity;

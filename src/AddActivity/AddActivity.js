@@ -1,11 +1,12 @@
 import { React, useState } from "react";
-import { connect } from "react-redux";
-import { ADD } from "../store/actions";
+import { useDispatch } from "react-redux";
+import { addActivity } from "../store/activitiesReducer";
 
 const AddActivity = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChangeNameField = (e) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ const AddActivity = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length !== 0 && description.length !== 0) {
-      props.addNewActivity(createNewActivity(name, description, status));
+      dispatch(addActivity(createNewActivity(name, description, status)));
     }
   };
   return (
@@ -92,16 +93,4 @@ const AddActivity = (props) => {
   );
 };
 
-const mapStateToProps = (stateActivities) => {
-  return {
-    activities: stateActivities,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addNewActivity: (newActivity) => dispatch({ type: ADD, newActivity }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddActivity);
+export default AddActivity;

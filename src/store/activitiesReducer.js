@@ -1,4 +1,4 @@
-import * as actionTypes from "./actions";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialActivities = [
   {
@@ -21,50 +21,39 @@ const initialActivities = [
   },
 ];
 
-const deleteActivity = (activities, id) => {
-  let position = -1;
-  for (let i = 0; i !== activities.length; ++i) {
-    if (parseInt(id) === parseInt(activities[i].id)) {
-      position = i;
-    }
-  }
-  const copyActivities = activities.slice(0);
-  copyActivities.splice(position, 1);
-  return copyActivities;
-};
-
 const getIdNewActivity = (activities) => {
   return activities.length ? activities[activities.length - 1].id + 1 : 1;
 };
 
-const addActivity = (activities, newActivity) => {
-  const copyActivities = activities.slice(0);
-  newActivity.id = getIdNewActivity(copyActivities);
-  copyActivities.push(newActivity);
-  return copyActivities;
-};
+const activitiesSlice = createSlice({
+  name: "activities",
+  initialState: initialActivities,
+  reducers: {
+    addActivity: (state, action) => {
+      action.payload.id = getIdNewActivity(state);
+      state.push(action.payload);
+    },
 
-const updateActivity = (activities, updatedActivity) => {
-  const copyActivities = activities.slice(0);
-  for (let i = 0; i !== copyActivities.length; ++i) {
-    if (parseInt(copyActivities[i].id) === parseInt(updatedActivity.id)) {
-      copyActivities[i] = updatedActivity;
-    }
-  }
-  return copyActivities;
-};
+    deleteActivity: (state, action) => {
+      let position = -1;
+      for (let i = 0; i !== state.length; ++i) {
+        if (parseInt(action.payload) === parseInt(state[i].id)) {
+          position = i;
+        }
+      }
+      state.splice(position, 1);
+    },
 
-const activitiesReducer = (activities = initialActivities, action) => {
-  switch (action.type) {
-    case actionTypes.DELETE:
-      return deleteActivity(activities, action.id);
-    case actionTypes.ADD:
-      return addActivity(activities, action.newActivity);
-    case actionTypes.UPDATE:
-      return updateActivity(activities, action.updatedActivity);
-    default:
-      return activities;
-  }
-};
+    updateActivity: (state, action) => {
+      for (let i = 0; i !== state.length; ++i) {
+        if (parseInt(state[i].id) === parseInt(action.payload.id)) {
+          state[i] = action.payload;
+        }
+      }
+    },
+  },
+});
 
-export default activitiesReducer;
+export const { addActivity, updateActivity, deleteActivity } =
+  activitiesSlice.actions;
+export default activitiesSlice.reducer;

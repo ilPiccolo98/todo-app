@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { UPDATE } from "../store/actions";
+import { useSelector, useDispatch } from "react-redux";
+import { updateActivity } from "../store/activitiesReducer";
 
 const UpdateActivity = (props) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
+  const activities = useSelector((state) => state.activities);
+  const dispatch = useDispatch();
 
   const isIdExisting = (id, activities) => {
     const idFound = activities.filter(
@@ -40,14 +42,16 @@ const UpdateActivity = (props) => {
       id.length !== 0 &&
       name.length !== 0 &&
       description.length !== 0 &&
-      isIdExisting(id, props.activities)
+      isIdExisting(id, activities)
     ) {
-      props.updateActivity({
-        id,
-        name,
-        description,
-        status,
-      });
+      dispatch(
+        updateActivity({
+          id,
+          name,
+          description,
+          status,
+        })
+      );
     }
   };
 
@@ -110,17 +114,4 @@ const UpdateActivity = (props) => {
   );
 };
 
-const mapStateToProps = (stateActivity) => {
-  return {
-    activities: stateActivity,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateActivity: (updatedActivity) =>
-      dispatch({ type: UPDATE, updatedActivity }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateActivity);
+export default UpdateActivity;

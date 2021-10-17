@@ -1,8 +1,9 @@
 import { React } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const Body = (props) => {
-  return props.activities.map((item) => (
+const Body = () => {
+  const activities = useSelector((state) => state.activities);
+  return activities.map((item) => (
     <tr key={item.id}>
       <td data-testid={"td-id-" + item.id}>{item.id}</td>
       <td data-testid={"td-name-" + item.id}>{item.name}</td>
@@ -12,10 +13,4 @@ const Body = (props) => {
   ));
 };
 
-const mapStateToProps = (stateActivities) => {
-  return {
-    activities: stateActivities,
-  };
-};
-
-export default connect(mapStateToProps)(Body);
+export default Body;
