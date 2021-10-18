@@ -1,9 +1,9 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { deleteActivity } from "../store/activitiesReducer";
+import { deleteActivity } from "../activities/activitiesReducer";
 import { useDispatch, useSelector } from "react-redux";
 
-const DeleteActivity = (props) => {
+const DeleteActivity = () => {
   const dispatch = useDispatch();
   const activities = useSelector((state) => state.activities);
 

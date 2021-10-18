@@ -1,7 +1,18 @@
 import React from "react";
-import App from "../../App";
-import { fireEvent, render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import { Provider } from "react-redux";
+import UpdateActivity from "../UpdateActivity";
+import activitiesStore from "../../activities/activitiesStore";
+import * as actions from "../../activities/activitiesReducer";
+
+const renderUpdateActivity = () => {
+  return render(
+    <Provider store={activitiesStore}>
+      <UpdateActivity />
+    </Provider>
+  );
+};
 
 const getUpdateActivityFormComponents = (component) => {
   const idFieldUpdateActivity = component.getByTestId(
@@ -28,78 +39,9 @@ const getUpdateActivityFormComponents = (component) => {
   };
 };
 
-const getRowDataCells = (table, index) => {
-  const row = table.childNodes[index];
-  const idCellData = row.childNodes[0];
-  const nameCellData = row.childNodes[1];
-  const descriptionCellData = row.childNodes[2];
-  const statusCellData = row.childNodes[3];
-  return {
-    idCellData,
-    nameCellData,
-    descriptionCellData,
-    statusCellData,
-  };
-};
-
-describe("UpdateActivity component", () => {
-  test("should show UpdateActivity form empty after pressed the update button", () => {
-    const component = render(<App test="updating" />);
-    const updateButtonApp = component.getByTestId("update-button-app");
-    fireEvent.click(updateButtonApp);
-    const {
-      idFieldUpdateActivity,
-      nameFieldUpdateActivity,
-      descriptionFieldUpdateActivity,
-      statusCheckboxUpdateActivity,
-    } = getUpdateActivityFormComponents(component);
-
-    expect(idFieldUpdateActivity.value).toBe("");
-    expect(nameFieldUpdateActivity.value).toBe("");
-    expect(descriptionFieldUpdateActivity.value).toBe("");
-    expect(statusCheckboxUpdateActivity.checked).toBe(false);
-    expect(component).toMatchSnapshot();
-  });
-
-  it("should let you type data into the UpdateActivity form", () => {
-    const component = render(<App test="updating" />);
-    const updateButtonApp = component.getByTestId("update-button-app");
-    fireEvent.click(updateButtonApp);
-    const {
-      idFieldUpdateActivity,
-      nameFieldUpdateActivity,
-      descriptionFieldUpdateActivity,
-      statusCheckboxUpdateActivity,
-    } = getUpdateActivityFormComponents(component);
-
-    fireEvent.change(idFieldUpdateActivity, {
-      target: {
-        value: "2",
-      },
-    });
-    fireEvent.change(nameFieldUpdateActivity, {
-      target: {
-        value: "updated name",
-      },
-    });
-    fireEvent.change(descriptionFieldUpdateActivity, {
-      target: {
-        value: "updated description",
-      },
-    });
-    fireEvent.click(statusCheckboxUpdateActivity);
-
-    expect(idFieldUpdateActivity.value).toBe("2");
-    expect(nameFieldUpdateActivity.value).toBe("updated name");
-    expect(descriptionFieldUpdateActivity.value).toBe("updated description");
-    expect(statusCheckboxUpdateActivity.checked).toBe(true);
-    expect(component).toMatchSnapshot();
-  });
-
-  it("should let you update an activity by using the UpdateActivity form", () => {
-    const component = render(<App test="updating" />);
-    const updateButtonApp = component.getByTestId("update-button-app");
-    fireEvent.click(updateButtonApp);
+describe("testing UpdateActivity component", () => {
+  it("should call the updateActivity action with { id=1, name=updated, description=update, status=true } as parameters after pressed the updated button", () => {
+    const component = renderUpdateActivity();
     const {
       idFieldUpdateActivity,
       nameFieldUpdateActivity,
@@ -107,72 +49,59 @@ describe("UpdateActivity component", () => {
       statusCheckboxUpdateActivity,
       updateButtonUpdateActivity,
     } = getUpdateActivityFormComponents(component);
-
+    const updateActivitySpy = jest.spyOn(actions, "updateActivity");
     fireEvent.change(idFieldUpdateActivity, {
       target: {
-        value: "2",
+        value: "1",
       },
     });
     fireEvent.change(nameFieldUpdateActivity, {
       target: {
-        value: "updated name",
+        value: "updated",
       },
     });
     fireEvent.change(descriptionFieldUpdateActivity, {
       target: {
-        value: "updated description",
+        value: "updated",
       },
     });
     fireEvent.click(statusCheckboxUpdateActivity);
     fireEvent.click(updateButtonUpdateActivity);
-    const tableBody = component.getByTestId("table-body");
-    const { idCellData, nameCellData, descriptionCellData, statusCellData } =
-      getRowDataCells(tableBody, 2);
-    expect(idCellData.textContent).toBe("2");
-    expect(nameCellData.textContent).toBe("updated name");
-    expect(descriptionCellData.textContent).toBe("updated description");
-    expect(statusCellData.textContent).toBe("true");
+    expect(updateActivitySpy).toHaveBeenCalledWith({
+      id: "1",
+      name: "updated",
+      description: "updated",
+      status: true,
+    });
     expect(component).toMatchSnapshot();
   });
 
-  it("shouldn't let you update a not existing activity", () => {
-    const component = render(<App test="updating" />);
-    const updateButtonApp = component.getByTestId("update-button-app");
-    fireEvent.click(updateButtonApp);
+  it("should call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button", () => {
+    const component = renderUpdateActivity();
     const {
       idFieldUpdateActivity,
       nameFieldUpdateActivity,
       descriptionFieldUpdateActivity,
-      statusCheckboxUpdateActivity,
       updateButtonUpdateActivity,
     } = getUpdateActivityFormComponents(component);
+    const updateActivitySpy = jest.spyOn(actions, "updateActivity");
     fireEvent.change(idFieldUpdateActivity, {
       target: {
-        value: "10",
+        value: "20",
       },
     });
     fireEvent.change(nameFieldUpdateActivity, {
       target: {
-        value: "updated name",
+        value: "updated",
       },
     });
     fireEvent.change(descriptionFieldUpdateActivity, {
       target: {
-        value: "updated description",
+        value: "updated",
       },
     });
-    fireEvent.click(statusCheckboxUpdateActivity);
     fireEvent.click(updateButtonUpdateActivity);
-    const tableBody = component.getByTestId("table-body");
-    for (let i = 1; i <= 3; ++i) {
-      const { idCellData, nameCellData, descriptionCellData } = getRowDataCells(
-        tableBody,
-        i
-      );
-      expect(idCellData.textContent).not.toBe("10");
-      expect(nameCellData.textContent).not.toBe("updated name");
-      expect(descriptionCellData.textContent).not.toBe("updated description");
-    }
+    expect(updateActivitySpy).not.toHaveBeenCalled();
     expect(component).toMatchSnapshot();
   });
 });

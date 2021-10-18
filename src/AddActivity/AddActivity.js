@@ -1,12 +1,17 @@
 import { React, useState } from "react";
-import { useDispatch } from "react-redux";
-import { addActivity } from "../store/activitiesReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { addActivity } from "../activities/activitiesReducer";
 
 const AddActivity = (props) => {
+  const dispatch = useDispatch();
+  const activities = useSelector((state) => state.activities);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
-  const dispatch = useDispatch();
+
+  const getIdNewActivity = (activities) => {
+    return activities.length ? activities[activities.length - 1].id + 1 : 1;
+  };
 
   const handleChangeNameField = (e) => {
     e.preventDefault();
@@ -22,18 +27,17 @@ const AddActivity = (props) => {
     setStatus(e.target.checked);
   };
 
-  const createNewActivity = (name, description, status) => {
-    return {
-      name,
-      description,
-      status,
-    };
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length !== 0 && description.length !== 0) {
-      dispatch(addActivity(createNewActivity(name, description, status)));
+      dispatch(
+        addActivity({
+          id: getIdNewActivity(activities),
+          name,
+          description,
+          status,
+        })
+      );
     }
   };
   return (

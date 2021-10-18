@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateActivity } from "../store/activitiesReducer";
+import { updateActivity } from "../activities/activitiesReducer";
 
-const UpdateActivity = (props) => {
+const UpdateActivity = () => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
