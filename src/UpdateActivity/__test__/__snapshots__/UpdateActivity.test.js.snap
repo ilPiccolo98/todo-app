@@ -195,7 +195,7 @@ Object {
 }
 `;
 
-exports[`testing UpdateActivity component should call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button 1`] = `
+exports[`testing UpdateActivity component shouldn't call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>

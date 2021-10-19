@@ -1,10 +1,10 @@
 import { React, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addActivity } from "../activities/activitiesReducer";
+import { addActivity, activitiesSelector } from "../activities/activitiesSlice";
 
 const AddActivity = (props) => {
   const dispatch = useDispatch();
-  const activities = useSelector((state) => state.activities);
+  const activities = useSelector(activitiesSelector);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);

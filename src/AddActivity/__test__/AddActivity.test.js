@@ -1,15 +1,29 @@
 /* eslint-disable import/first */
 import React from "react";
-import initialActivities from "../../activities/initialActivities";
-jest.mock("../../activities/initialActivities.js", () => {
-  return jest.fn();
-});
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import AddActivity from "../AddActivity";
 import activitiesStore from "../../activities/activitiesStore";
-import * as actions from "../../activities/activitiesReducer";
+import {
+  activitiesSelector,
+  addActivity,
+} from "../../activities/activitiesSlice";
+
+jest.mock("../../activities/activitiesSlice", () => {
+  const original = jest.requireActual("../../activities/activitiesSlice");
+  return {
+    __esModule: true,
+    ...original,
+    activitiesSelector: jest.fn(),
+    addActivity: jest.fn((payload) => {
+      return {
+        type: "activities/addActivity",
+        payload,
+      };
+    }),
+  };
+});
 
 const renderAddActivity = () => {
   return render(
@@ -40,17 +54,14 @@ const getAddTaskFormFields = (component) => {
 };
 
 describe("testing AddActivity Component", () => {
-  beforeEach(() => {
-    initialActivities.mockReset().mockReturnValue([]);
-  });
   it("should not add an activity with name field blank", () => {
+    activitiesSelector.mockReset().mockReturnValue([]);
     const component = renderAddActivity();
     const {
       descriptionFieldAddActivity,
       statusCheckboxAddActivity,
       insertButtonAddActivity,
     } = getAddTaskFormFields(component);
-    const addActivitySpy = jest.spyOn(actions, "addActivity");
     fireEvent.change(descriptionFieldAddActivity, {
       target: {
         value: "activity",
@@ -58,10 +69,11 @@ describe("testing AddActivity Component", () => {
     });
     fireEvent.click(statusCheckboxAddActivity);
     fireEvent.click(insertButtonAddActivity);
-    expect(addActivitySpy).not.toHaveBeenCalled();
+    expect(addActivity).not.toHaveBeenCalled();
   });
 
   it("should add the first activity with { id=1, name=activity, description=activity, status=true }", () => {
+    activitiesSelector.mockReset().mockReturnValue([]);
     const component = renderAddActivity();
     const {
       nameFieldAddActivity,
@@ -69,7 +81,6 @@ describe("testing AddActivity Component", () => {
       statusCheckboxAddActivity,
       insertButtonAddActivity,
     } = getAddTaskFormFields(component);
-    const addActivitySpy = jest.spyOn(actions, "addActivity");
     fireEvent.change(nameFieldAddActivity, {
       target: {
         value: "activity",
@@ -82,7 +93,7 @@ describe("testing AddActivity Component", () => {
     });
     fireEvent.click(statusCheckboxAddActivity);
     fireEvent.click(insertButtonAddActivity);
-    expect(addActivitySpy).toHaveBeenCalledWith({
+    expect(addActivity).toHaveBeenCalledWith({
       id: 1,
       name: "activity",
       description: "activity",
@@ -90,14 +101,21 @@ describe("testing AddActivity Component", () => {
     });
   });
 
-  it("should add the second activity with { id=2, name=activity2, description=activity2 }", () => {
+  it("should add the second activity with { id=2, name=activity2, description=activity2, status=false }", () => {
+    activitiesSelector.mockReset().mockReturnValue([
+      {
+        id: 1,
+        name: "shopping",
+        description: "buy some stuff",
+        status: false,
+      },
+    ]);
     const component = renderAddActivity();
     const {
       nameFieldAddActivity,
       descriptionFieldAddActivity,
       insertButtonAddActivity,
     } = getAddTaskFormFields(component);
-    const addActivitySpy = jest.spyOn(actions, "addActivity");
     fireEvent.change(nameFieldAddActivity, {
       target: {
         value: "activity2",
@@ -109,11 +127,11 @@ describe("testing AddActivity Component", () => {
       },
     });
     fireEvent.click(insertButtonAddActivity);
-    expect(addActivitySpy).toHaveBeenCalledWith({
+    expect(addActivity).toHaveBeenCalledWith({
       id: 2,
       name: "activity2",
       description: "activity2",
-      status: true,
+      status: false,
     });
   });
 });

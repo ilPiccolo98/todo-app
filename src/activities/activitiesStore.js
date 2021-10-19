@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import activitiesReducer from "./activitiesReducer";
+import activitiesSlice from "./activitiesSlice";
 
 const storeActivities = configureStore({
   reducer: {
-    activities: activitiesReducer,
+    activities: activitiesSlice,
   },
 });
 

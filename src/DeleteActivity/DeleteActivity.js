@@ -1,17 +1,20 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { deleteActivity } from "../activities/activitiesReducer";
+import {
+  deleteActivity,
+  activitiesSelector,
+} from "../activities/activitiesSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const DeleteActivity = () => {
   const dispatch = useDispatch();
-  const activities = useSelector((state) => state.activities);
+  const activities = useSelector(activitiesSelector);
 
   const isIdExisting = (id, activities) => {
     const idFound = activities.filter((item) => {
       return parseInt(item.id) === parseInt(id);
     });
-    return idFound.length ? true : false;
+    return idFound.length !== 0;
   };
 
   const handleSubmit = (values) => {

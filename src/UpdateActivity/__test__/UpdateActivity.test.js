@@ -4,7 +4,17 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import UpdateActivity from "../UpdateActivity";
 import activitiesStore from "../../activities/activitiesStore";
-import * as actions from "../../activities/activitiesReducer";
+import * as actions from "../../activities/activitiesSlice";
+import { activitiesSelector } from "../../activities/activitiesSlice";
+
+jest.mock("../../activities/activitiesSlice", () => {
+  const original = jest.requireActual("../../activities/activitiesSlice");
+  return {
+    __esModule: true,
+    ...original,
+    activitiesSelector: jest.fn(),
+  };
+});
 
 const renderUpdateActivity = () => {
   return render(
@@ -40,6 +50,17 @@ const getUpdateActivityFormComponents = (component) => {
 };
 
 describe("testing UpdateActivity component", () => {
+  beforeEach(() => {
+    activitiesSelector.mockReset().mockReturnValue([
+      {
+        id: 1,
+        name: "shopping",
+        description: "buy some stuff",
+        status: false,
+      },
+    ]);
+  });
+
   it("should call the updateActivity action with { id=1, name=updated, description=update, status=true } as parameters after pressed the updated button", () => {
     const component = renderUpdateActivity();
     const {
@@ -74,9 +95,10 @@ describe("testing UpdateActivity component", () => {
       status: true,
     });
     expect(component).toMatchSnapshot();
+    updateActivitySpy.resetMock();
   });
 
-  it("should call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button", () => {
+  it("shouldn't call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button", () => {
     const component = renderUpdateActivity();
     const {
       idFieldUpdateActivity,
@@ -103,5 +125,6 @@ describe("testing UpdateActivity component", () => {
     fireEvent.click(updateButtonUpdateActivity);
     expect(updateActivitySpy).not.toHaveBeenCalled();
     expect(component).toMatchSnapshot();
+    updateActivitySpy.resetMock();
   });
 });

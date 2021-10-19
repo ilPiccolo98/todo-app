@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateActivity } from "../activities/activitiesReducer";
+import {
+  updateActivity,
+  activitiesSelector,
+} from "../activities/activitiesSlice";
 
 const UpdateActivity = () => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState(false);
-  const activities = useSelector((state) => state.activities);
+  const activities = useSelector(activitiesSelector);
   const dispatch = useDispatch();
 
   const isIdExisting = (id, activities) => {
     const idFound = activities.filter(
       (item) => parseInt(item.id) === parseInt(id)
     );
-    return idFound.length ? true : false;
+    return idFound.length !== 0;
   };
 
   const handleChangeIdField = (e) => {

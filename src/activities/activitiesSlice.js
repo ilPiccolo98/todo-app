@@ -32,4 +32,6 @@ const activitiesSlice = createSlice({
 export const { addActivity, updateActivity, deleteActivity } =
   activitiesSlice.actions;
 
+export const activitiesSelector = (state) => state.activities;
+
 export default activitiesSlice.reducer;
