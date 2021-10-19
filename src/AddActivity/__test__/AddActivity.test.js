@@ -44,7 +44,6 @@ const getAddTaskFormFields = (component) => {
   const insertButtonAddActivity = component.getByTestId(
     "insert-button-add-activity"
   );
-
   return {
     nameFieldAddActivity,
     descriptionFieldAddActivity,
