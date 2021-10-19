@@ -54,6 +54,14 @@ const getAddTaskFormFields = (component) => {
 };
 
 describe("testing AddActivity Component", () => {
+  beforeEach(() => {
+    addActivity.mockReset().mockImplementation((payload) => {
+      return {
+        type: "activities/addActivity",
+        payload,
+      };
+    });
+  });
   it("should not add an activity with name field blank", () => {
     activitiesSelector.mockReset().mockReturnValue([]);
     const component = renderAddActivity();

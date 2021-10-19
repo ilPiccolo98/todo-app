@@ -4,8 +4,10 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import UpdateActivity from "../UpdateActivity";
 import activitiesStore from "../../activities/activitiesStore";
-import * as actions from "../../activities/activitiesSlice";
-import { activitiesSelector } from "../../activities/activitiesSlice";
+import {
+  activitiesSelector,
+  updateActivity,
+} from "../../activities/activitiesSlice";
 
 jest.mock("../../activities/activitiesSlice", () => {
   const original = jest.requireActual("../../activities/activitiesSlice");
@@ -13,6 +15,12 @@ jest.mock("../../activities/activitiesSlice", () => {
     __esModule: true,
     ...original,
     activitiesSelector: jest.fn(),
+    updateActivity: jest.fn((payload) => {
+      return {
+        type: "activities/updateActivity",
+        payload,
+      };
+    }),
   };
 });
 
@@ -51,6 +59,12 @@ const getUpdateActivityFormComponents = (component) => {
 
 describe("testing UpdateActivity component", () => {
   beforeEach(() => {
+    updateActivity.mockReset().mockImplementation((payload) => {
+      return {
+        type: "activities/updateActivity",
+        payload,
+      };
+    });
     activitiesSelector.mockReset().mockReturnValue([
       {
         id: 1,
@@ -70,7 +84,6 @@ describe("testing UpdateActivity component", () => {
       statusCheckboxUpdateActivity,
       updateButtonUpdateActivity,
     } = getUpdateActivityFormComponents(component);
-    const updateActivitySpy = jest.spyOn(actions, "updateActivity");
     fireEvent.change(idFieldUpdateActivity, {
       target: {
         value: "1",
@@ -88,14 +101,13 @@ describe("testing UpdateActivity component", () => {
     });
     fireEvent.click(statusCheckboxUpdateActivity);
     fireEvent.click(updateButtonUpdateActivity);
-    expect(updateActivitySpy).toHaveBeenCalledWith({
+    expect(updateActivity).toHaveBeenCalledWith({
       id: "1",
       name: "updated",
       description: "updated",
       status: true,
     });
     expect(component).toMatchSnapshot();
-    updateActivitySpy.resetMock();
   });
 
   it("shouldn't call the updateActivity action with { id=20, name=updated, description=update, status=false } as parameters after pressed the updated button", () => {
@@ -106,7 +118,6 @@ describe("testing UpdateActivity component", () => {
       descriptionFieldUpdateActivity,
       updateButtonUpdateActivity,
     } = getUpdateActivityFormComponents(component);
-    const updateActivitySpy = jest.spyOn(actions, "updateActivity");
     fireEvent.change(idFieldUpdateActivity, {
       target: {
         value: "20",
@@ -123,8 +134,7 @@ describe("testing UpdateActivity component", () => {
       },
     });
     fireEvent.click(updateButtonUpdateActivity);
-    expect(updateActivitySpy).not.toHaveBeenCalled();
+    expect(updateActivity).not.toHaveBeenCalled();
     expect(component).toMatchSnapshot();
-    updateActivitySpy.resetMock();
   });
 });
